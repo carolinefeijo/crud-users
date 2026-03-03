@@ -1,0 +1,25 @@
+.header-div {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+min-height: 50px;
+}
+
+body{
+  margin: 0;
+}
+
+.logo {
+  width: 100px;
+  
+}
+
+.space {
+  display: flex;
+  width: 97%;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: space-between;
+
+}
