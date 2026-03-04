@@ -2,6 +2,7 @@ import { useState } from "react";
 import { setCreateUserRequest } from "../../../../store/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
+import "./styles.css";
 
 function Create({
   visible,

@@ -9,8 +9,8 @@ import api from "../../../api";
 import type { UserResponse, CreateUserPayload, User } from "./types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+// listar todos os usuários
 function* fetchUsersSaga(): Generator {
-  // listar todos os usuários
   try {
     const { data: response }: { data: UserResponse } = yield call(
       api.get,
