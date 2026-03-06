@@ -28,6 +28,11 @@ export type CreateUserPayload = {
   phone?: string;
 };
 
+export type EditUserPayload = {
+  id: string;
+  user: User;
+};
+
 export type PayloadActions = {
   SetCreateUserRequest: {
     type: string;
@@ -38,6 +43,18 @@ export type PayloadActions = {
     payload: UserResponse;
   };
   setCreateUserSuccess: {
+    type: string;
+    payload: {
+      user: User;
+    };
+  };
+  setEditUserRequest: {
+    type: string;
+    payload: {
+      user: User;
+    };
+  };
+  setEditUserSuccess: {
     type: string;
     payload: {
       user: User;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import type { PayloadActions, User } from "./types";
 
 export interface UserState {
@@ -42,6 +42,28 @@ export const userSlice = createSlice({
       const newUser = action.payload.user;
       state.users = [newUser, ...state.users];
     },
+    setEditUserResquest: (
+      state,
+      _action: PayloadActions["setEditUserRequest"],
+    ) => {
+      state.isSubmitting = true;
+    },
+    setEditUserSuccess: (
+      state,
+      action: PayloadActions["setEditUserSuccess"],
+    ) => {
+      const currentState = current(state);
+      const users = currentState.users;
+      const userEdit = action.payload.user;
+      const newlist = users.map((user) => {
+        if (user.id === userEdit.id) {
+          return userEdit;
+        }
+        return user;
+      });
+
+      state.users = newlist;
+    },
   },
 });
 
@@ -50,6 +72,8 @@ export const {
   fetchUsersSuccess,
   setCreateUserRequest,
   setCreateUserSuccess,
+  setEditUserResquest,
+  setEditUserSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;

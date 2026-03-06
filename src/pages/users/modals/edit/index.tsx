@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Modal from "../../../../components/Modal";
 import type { User } from "../../../../store/features/user/types";
+import { setEditUserResquest } from "../../../../store/features/user/userSlice";
+import { useDispatch } from "react-redux";
 
 function Edit({
   visible,
@@ -13,16 +15,18 @@ function Edit({
   onClose: () => void;
   user: User | null;
 }) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
 
   const handleOnClose = () => {
-    setName("");
-    setEmail("");
-    setPhone("");
-    setError("");
+    // setName("");
+    // setEmail("");
+    // setPhone("");
+    // setError("");
     onClose();
   };
 
@@ -36,6 +40,18 @@ function Edit({
     setPhone(user.phone || "");
   };
 
+  const handleEdit = () => {
+    if (!user) return;
+
+    const newUser: User = {
+      email,
+      name,
+      phone,
+      id: user.id,
+    };
+    dispatch(setEditUserResquest({ user: newUser }));
+  };
+
   useEffect(() => {
     updateState();
   }, [user]);
@@ -46,6 +62,7 @@ function Edit({
 
   return (
     <Modal title="Editar usuario" onClose={handleOnClose} visible={visible}>
+      {console.log(user, "user edit")}
       <p>Conteúdo do Modal</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <input
@@ -91,9 +108,8 @@ function Edit({
           opacity: canSubmit ? 1 : 0.5,
         }}
         onClick={() => {
-          // handleCreate();
-          // handleOnClose();
-          console.log("EDITADO");
+          handleEdit();
+          handleOnClose();
         }}
       >
         Editar
