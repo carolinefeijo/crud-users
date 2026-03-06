@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   fetchUsersRequest,
   type UserState,
@@ -10,6 +9,7 @@ import Create from "./modals/create";
 import Edit from "./modals/edit";
 import Delete from "./modals/delete";
 import type { User } from "../../store/features/user/types";
+import "./styles.css";
 
 function Users() {
   const dispatch = useDispatch();
@@ -34,15 +34,18 @@ function Users() {
     setIsOpenEditModal(false);
   };
 
+  // abrir modal de edicao
   const openEditModal = (user: User) => {
     setSelected(user);
     setIsOpenEditModal(true);
   };
 
+  //abrir modal de deletar
   const openDeleteModal = () => {
     setIsOpenDeleteModal(true);
   };
 
+  //fechar modal de deletar
   const closeDeleteModal = () => {
     setIsOpenDeleteModal(false);
   };
@@ -54,139 +57,45 @@ function Users() {
   return (
     <>
       <Header />
-      <div
-        style={{
-          margin: "20px",
-          marginTop: "50px",
-        }}
-      >
-        <div style={{ display: "flex", gap: "5rem", alignItems: "center" }}>
+
+      <div className="container">
+        <div className="header">
           <h2>Total de colaboradores</h2>
-          <button
-            style={{
-              cursor: "pointer",
-              borderRadius: "5px",
-              border: "1px solid #c56cb8",
-              backgroundColor: "#edaee4",
-              color: "#080808",
-              padding: "5px 10px",
-            }}
-            onClick={() => {
-              openModal();
-            }}
-          >
+          <button className="primaryButton" onClick={openModal}>
             CRIAR USUARIO
           </button>
         </div>
-        {users?.map((user) => {
-          return (
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-              key={user.id}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "10px",
-                  padding: "5px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "250px",
-                    backgroundColor: "#eee",
-                    borderRadius: "5px",
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <p>{user.name}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "250px",
-                    backgroundColor: "#eee",
-                    borderRadius: "5px",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <p>{user.email || "--"}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "250px",
-                    backgroundColor: "#eee",
-                    borderRadius: "5px",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <p>{user.phone || "--"}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "250px",
 
-                    flexDirection: "row",
-                    gap: "10px",
-                  }}
+        <div className="userList">
+          {users?.map((user) => (
+            <div className="userRow " key={user.id}>
+              <div className="userInfoField">
+                <p>{user.name}</p>
+              </div>
+
+              <div className="userInfoField">
+                <p>{user.email || "--"}</p>
+              </div>
+
+              <div className="userInfoField">
+                <p>{user.phone || "--"}</p>
+              </div>
+
+              <div className="actionsContainer">
+                <button className="primaryButton">Ver</button>
+                <button
+                  className="primaryButton"
+                  onClick={() => openEditModal(user)}
                 >
-                  <button
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "5px",
-                      border: "1px solid #c56cb8",
-                      backgroundColor: "#edaee4",
-                      color: "#080808",
-                      padding: "5px 10px",
-                    }}
-                  >
-                    Ver
-                  </button>
-                  <button
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "5px",
-                      border: "1px solid #c56cb8",
-                      backgroundColor: "#edaee4",
-                      color: "#080808",
-                      padding: "5px 10px",
-                    }}
-                    onClick={() => {
-                      openEditModal(user);
-                    }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "5px",
-                      border: "1px solid #c56cb8",
-                      backgroundColor: "#edaee4",
-                      color: "#080808",
-                      padding: "5px 10px",
-                    }}
-                    onClick={() => {
-                      openDeleteModal();
-                    }}
-                  >
-                    Deletar
-                  </button>
-                </div>
+                  Editar
+                </button>
+                <button className="primaryButton" onClick={openDeleteModal}>
+                  Deletar
+                </button>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
       <Create visible={isOpenModal} onClose={closeModal} />
       <Edit
