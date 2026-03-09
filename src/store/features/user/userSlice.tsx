@@ -76,15 +76,15 @@ export const userSlice = createSlice({
     ) => {
       const currentState = current(state);
       const users = currentState.users;
-      const userDelete = action.payload.user;
-      const newlist = users.map((user) => {
-        if (user.id === userDelete.id) {
-          return userDelete;
+
+      const newList = users.filter((user) => {
+        if (user.id !== action.payload.id) {
+          return user;
         }
-        return user;
+        return;
       });
 
-      state.users = newlist;
+      state.users = newList;
     },
   },
 });

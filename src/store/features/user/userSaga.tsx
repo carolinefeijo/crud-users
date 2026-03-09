@@ -1,3 +1,6 @@
+import api from "../../../api";
+import { toast } from "react-toastify";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
   fetchUsersRequest,
@@ -9,7 +12,6 @@ import {
   setDeleteUserRequest,
   setDeleteUserSuccess,
 } from "./userSlice";
-import api from "../../../api";
 import type {
   UserResponse,
   CreateUserPayload,
@@ -17,7 +19,6 @@ import type {
   EditUserPayload,
   DeleteUserPayload,
 } from "./types";
-import type { PayloadAction } from "@reduxjs/toolkit";
 
 // listar todos os usuários
 function* fetchUsersSaga(): Generator {
@@ -36,22 +37,27 @@ function* fetchUsersSaga(): Generator {
 function* setCreateUserSaga(
   action: PayloadAction<CreateUserPayload>,
 ): Generator {
-  yield console.log("Criar usuário:", action.payload);
   try {
     const { data: response }: { data: User } = yield call(
       api.post,
       "/users",
       action.payload,
     );
+
     yield put(
       setCreateUserSuccess({
         user: response,
       }),
     );
 
-    console.log("Usuário criado com sucesso:", response);
+    toast.success("Usuário criado com sucesso!");
   } catch (error) {
-    console.log("erro ao criar usuário:", error);
+    const err = error as { response?: { status: number } };
+    if (err.response?.status === 400) {
+      toast.error("Email já cadastrado, tente com outro!");
+      return;
+    }
+    toast.error("Erro ao criar usuário. Tente novamente.");
   }
 }
 
@@ -71,9 +77,9 @@ function* setEditUserSaga(action: PayloadAction<EditUserPayload>): Generator {
         user: response,
       }),
     );
-    console.log("Usuário editado com sucesso:", response);
-  } catch (error) {
-    console.log("erro ao editar usuário:", error);
+    toast.success("Usuário editado com sucesso!");
+  } catch {
+    toast.error("Erro ao editar usuário. Tente novamente.");
   }
 }
 
@@ -82,22 +88,17 @@ function* setDeleteUserSaga(
   action: PayloadAction<DeleteUserPayload>,
 ): Generator {
   try {
-    const id = action.payload.user.id;
-    const body = action.payload.user;
+    const id = action.payload.id;
 
-    const { data: response }: { data: User } = yield call(
-      api.delete,
-      `/users/${id}`,
-      { data: body },
-    );
+    yield call(api.delete, `/users/${id}`);
     yield put(
       setDeleteUserSuccess({
-        user: response,
+        id,
       }),
     );
-    console.log("Usuário deletado com sucesso:", response);
-  } catch (error) {
-    console.log("erro ao deletado usuário:", error);
+    toast.success("Usuário deletado com sucesso");
+  } catch {
+    toast.error("erro ao deletado usuário:");
   }
 }
 

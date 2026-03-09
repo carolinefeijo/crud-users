@@ -18,6 +18,7 @@ function Users() {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [selected, setSelected] = useState<User | null>(null);
+  const [userDeleted, setUserDeleted] = useState<User | null>(null);
 
   // abrir modal
   const openModal = () => {
@@ -41,7 +42,8 @@ function Users() {
   };
 
   //abrir modal de deletar
-  const openDeleteModal = () => {
+  const openDeleteModal = (user: User) => {
+    setUserDeleted(user);
     setIsOpenDeleteModal(true);
   };
 
@@ -89,7 +91,10 @@ function Users() {
                 >
                   Editar
                 </button>
-                <button className="primaryButton" onClick={openDeleteModal}>
+                <button
+                  className="primaryButton"
+                  onClick={() => openDeleteModal(user)}
+                >
                   Deletar
                 </button>
               </div>
@@ -103,8 +108,11 @@ function Users() {
         onClose={closeEditModal}
         user={selected}
       />
-
-      <Delete visible={isOpenDeleteModal} onClose={closeDeleteModal} />
+      <Delete
+        visible={isOpenDeleteModal}
+        onClose={closeDeleteModal}
+        user={userDeleted}
+      />
     </>
   );
 }

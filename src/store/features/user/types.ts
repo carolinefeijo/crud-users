@@ -34,8 +34,7 @@ export type EditUserPayload = {
 };
 
 export type DeleteUserPayload = {
-  id: string;
-  user: User;
+  id: number;
 };
 
 export type PayloadActions = {
@@ -68,13 +67,13 @@ export type PayloadActions = {
   setDeleteUserRequest: {
     type: string;
     payload: {
-      user: User;
+      id: number;
     };
   };
   setDeleteUserSuccess: {
     type: string;
     payload: {
-      user: User;
+      id: number;
     };
   };
 };

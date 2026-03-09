@@ -23,10 +23,6 @@ function Edit({
   const [error, setError] = useState("");
 
   const handleOnClose = () => {
-    // setName("");
-    // setEmail("");
-    // setPhone("");
-    // setError("");
     onClose();
   };
 
@@ -62,7 +58,6 @@ function Edit({
 
   return (
     <Modal title="Editar usuario" onClose={handleOnClose} visible={visible}>
-      {console.log(user, "user edit")}
       <p>Conteúdo do Modal</p>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <input
